@@ -18,7 +18,7 @@ class MessagesController < ApplicationController
     redirect_to :action => :index, :status => 303
   end
 
-private
+  private
 
   def user
     if params[:user_id]
