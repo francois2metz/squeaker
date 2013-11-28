@@ -12,6 +12,10 @@ class UserSessionsController < ApplicationController
         authentication_handler.login_failed(username)
       end
     end
+
+    def logout
+      authentication_handler.logout
+    end
   end
 
   class SessionStorage < Struct.new(:authentication_handler, :session)
@@ -20,6 +24,11 @@ class UserSessionsController < ApplicationController
     def login_successful(user)
       session[:logged_in_user_id] = user.id
       authentication_handler.login_successful(user)
+    end
+
+    def logout
+      session[:logged_in_user_id] = nil
+      authentication_handler.logout
     end
   end
 
@@ -40,9 +49,14 @@ class UserSessionsController < ApplicationController
     authenticator(AuthenticationCallback).authenticate(username)
   end
 
+  class LogoutCallback < SimpleDelegator
+    def logout
+      redirect_to root_path
+    end
+  end
+
   def destroy
-    session[:logged_in_user_id] = nil
-    redirect_to root_path
+    authenticator(LogoutCallback).logout
   end
 
   protected
