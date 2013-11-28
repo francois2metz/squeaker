@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
 
   # All messages in the feed
   def feed
-    feed = Array.new
+    feed = []
     feed.concat messages
     followed_users.each {|f| feed.concat f.messages}
     return feed.sort {|a,b| a.created_at <=> b.created_at}
