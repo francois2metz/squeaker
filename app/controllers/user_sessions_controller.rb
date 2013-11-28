@@ -15,9 +15,7 @@ class UserSessionsController < ApplicationController
   end
 
   class SessionStorage < Struct.new(:authentication_handler, :session)
-    def login_failed(username)
-      authentication_handler.login_failed(username)
-    end
+    delegate :login_failed, to: :authentication_handler
 
     def login_successful(user)
       session[:logged_in_user_id] = user.id
