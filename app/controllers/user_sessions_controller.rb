@@ -37,7 +37,7 @@ class UserSessionsController < ApplicationController
   def create
     username = params[:user_session][:username]
 
-    authenticator.authenticate(username)
+    authenticator(AuthenticationCallback).authenticate(username)
   end
 
   def destroy
@@ -47,7 +47,7 @@ class UserSessionsController < ApplicationController
 
   protected
 
-  def authenticator
-    Authenticator.new(SessionStorage.new(AuthenticationCallback.new(self), session))
+  def authenticator(callback)
+    Authenticator.new(SessionStorage.new(callback.new(self), session))
   end
 end
