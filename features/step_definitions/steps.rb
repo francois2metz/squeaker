@@ -32,6 +32,11 @@ module UISupport
     click_button 'Log in'
     @logged_in_user = user_named(username)
   end
+
+  def log_out
+    visit '/'
+    click_button 'Log Out'
+  end
 end
 
 World(UserSupport, UISupport)
@@ -60,6 +65,10 @@ end
 When(/^I log in as "(.*?)"$/) do |username|
   ensure_account_for(username)
   log_in_as username
+end
+
+When(/^I log out$/) do
+  log_out
 end
 
 When(/^I try to log in as "(.*?)"$/) do |username|
