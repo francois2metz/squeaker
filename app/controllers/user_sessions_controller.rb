@@ -21,7 +21,7 @@ class UserSessionsController < ApplicationController
 
     def login_successful(user)
       session[:logged_in_user_id] = user.id
-      authentication_handler.login_failed(user)
+      authentication_handler.login_successful(user)
     end
   end
 
