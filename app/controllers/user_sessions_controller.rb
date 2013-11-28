@@ -3,21 +3,32 @@ class UserSessionsController < ApplicationController
     @user_session = UserSession.new
   end
 
-  class Authenticator < Struct.new(:controller)
+  class Authenticator < Struct.new(:authentication_handler)
     def authenticate(username)
       user = User.find_by_username(username)
       if user
-        controller.login_successful(user)
+        authentication_handler.login_successful(user)
       else
-        controller.login_failed(username)
+        authentication_handler.login_failed(username)
       end
+    end
+  end
+
+  class SessionStorage < Struct.new(:authentication_handler, :session)
+    def login_failed(username)
+      authentication_handler.login_failed(username)
+    end
+
+    def login_successful(user)
+      session[:logged_in_user_id] = user.id
+      authentication_handler.login_failed(user)
     end
   end
 
   def create
     username = params[:user_session][:username]
 
-    Authenticator.new(self).authenticate(username)
+    Authenticator.new(SessionStorage.new(self, session)).authenticate(username)
   end
 
   def destroy
@@ -31,7 +42,6 @@ class UserSessionsController < ApplicationController
   end
 
   def login_successful(user)
-    session[:logged_in_user_id] = user.id
     redirect_to root_path, status: 303
   end
 end
