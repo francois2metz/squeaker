@@ -5,7 +5,7 @@ class UsersController < ApplicationController
     
     @logged_in_user.followed_users << user_to_follow
     @logged_in_user.save
-    redirect_to :controller => :messages, :action => :index
+    redirect_to controller: :messages, action: :index
   end
 
   def show
@@ -19,6 +19,6 @@ class UsersController < ApplicationController
   def create
     new_user = User.create!(params[:user])
     session[:logged_in_user_id] = new_user.id
-    redirect_to root_path, :status => 303
+    redirect_to root_path, status: 303
   end
 end

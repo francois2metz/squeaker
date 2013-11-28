@@ -11,7 +11,7 @@ class UserSessionsController < ApplicationController
     end
     session[:logged_in_user_id] = user.id
 
-    redirect_to root_path, :status => 303
+    redirect_to root_path, status: 303
   end
 
   def destroy

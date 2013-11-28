@@ -1,17 +1,18 @@
+# -*- coding: utf-8 -*-
 class User < ActiveRecord::Base
   has_many :messages
   
   has_and_belongs_to_many(:followed_users,
-    :class_name => "User",
-    :join_table => "followers",
-    :foreign_key => 'follower_id',
-    :association_foreign_key => "followed_id")
+    class_name: "User",
+    join_table: "followers",
+    foreign_key: 'follower_id',
+    association_foreign_key: "followed_id")
   
   has_and_belongs_to_many(:followers,
-    :class_name => "User",
-    :join_table => "followers",
-    :foreign_key => 'followed_id',
-    :association_foreign_key => "follower_id")
+    class_name: "User",
+    join_table: "followers",
+    foreign_key: 'followed_id',
+    association_foreign_key: "follower_id")
   
   validates_uniqueness_of :username
   
@@ -34,7 +35,7 @@ class User < ActiveRecord::Base
   # Class method to return a null object representing an unknown
   # (i.e. not logged in) User
   def self.unknown
-    new(:username => 'stranger')
+    new(username: 'stranger')
   end
 
   def post_message(content)
